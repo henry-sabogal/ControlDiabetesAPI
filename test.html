@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body onload="sendData()">
+        <div>TODO write content</div>
+    </body>
+    <script>
+        http_request = false;
+        url = "http://localhost:8888/store_msg/";
+
+        const json = {"event": {
+                "eventType": "TestSensor",
+                "value": "0.2",
+                "timestamp": "2020-07-19 16:45:00",
+                "metadata": "un metadato"
+            }};
+
+        function sendData() {
+            if (window.XMLHttpRequest) {
+                http_request = new XMLHttpRequest();
+                if (http_request.overrideMimeType) {
+                    http_request.overrideMimeType('text/xml');
+                }
+            } else if (window.ActiveXObject) {
+                try {
+                    http_request = new ActiveXObject("Msxml2.XMLHTTP");
+                } catch (e) {
+                    try {
+                        http_request = new ActiveXObject("Microsoft.XMLHTTP");
+                    } catch (e) {
+                    }
+                }
+            }
+
+            if (!http_request) {
+                alert("Error: No es posible crear una instancia XMLHTTP");
+            }
+            http_request.onreadystatechange = getResponse;
+            http_request.open('POST', url, true);
+            http_request.send(JSON.stringify(json));
+        }
+
+        function getResponse() {
+            if (http_request.readyState == 4) {
+                if (http_request.status == 200) {
+                    console.log(http_request.responseText);
+                } else {
+                    alert('Hubo problemas con la petición')
+                }
+            }
+        }
+    </script>
+</html>

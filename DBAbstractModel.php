@@ -2,14 +2,15 @@
 abstract class DBAbstractModel{
     private static $db_host = 'localhost';
     private static $db_user = '';
-    private static $db_password = '######';
+    private static $db_password = '###';
     protected $db_name = 'well_being_project';
     protected $rows = array();
     protected $query;
     private $conn;
     
     
-    abstract function setJsonData();
+    abstract function get();
+    abstract function set();
     
     private function open_connection(){
         $this->conn = new mysqli(self::$db_host, self::$db_user, self::$db_password, $this->db_name);

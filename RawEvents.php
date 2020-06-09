@@ -14,8 +14,20 @@ class RawEvents extends DBAbstractModel{
         return json_encode($this->rows);
     }
     
-    public function setJsonData() {
-        ;
+    public function setData($id, $tstamp, $value, $metadata) {
+        $this->query = "
+            INSERT INTO RawEvents (evtTypeFk, tstamp, value, metadata)
+            VALUES ('$id','$tstamp','$value','$metadata')
+        ";
+        $this->execute_single_query();
+    }
+    
+    public function set() {
+        
+    }
+    
+    public function get() {
+        
     }
     
 }
