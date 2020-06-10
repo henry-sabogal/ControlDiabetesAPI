@@ -8,6 +8,7 @@ require __DIR__ . '/RawEvents.php';
 
 $app = AppFactory::create();
 
+//$app->setBasePath("/controldiabetes");
 $app->addErrorMiddleware(true, true, true);
 
 $app->get('/', function(Request $request, Response $response){
@@ -30,9 +31,11 @@ $app->post('/store_msg/', function(Request $request, Response $response, $args){
     $eventType = $rawEvent->getJsonResult($data->event->eventType);
     $eventTypeData = json_decode($eventType);
     
+    $metadata = base64_decode($data->event->metadata);
+    
     $data_response = null;
     if($eventTypeData[0][0]->evtTypePk != null){
-        $rawEvent->setData($eventTypeData[0][0]->evtTypePk, $data->event->timestamp, $data->event->value, $data->event->metadata);
+        $rawEvent->setData($eventTypeData[0][0]->evtTypePk, $data->event->timestamp, $data->event->value, $metadata);
         $data_response = array(
             "success" => true,
             "message" => "Data was stored in the database"
